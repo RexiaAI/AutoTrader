@@ -6,7 +6,7 @@ This document describes how AutoTrader is structured today, the intended data ow
 
 AutoTrader runs as **two Python processes** plus a **React dashboard**:
 
-- **Trader engine** (cycle orchestrator): `main.py`
+- **Trader engine** (cycle orchestrator): `main.py` (entrypoint) → `src/trader/runner.py` (trading loop)
   - Connects to **IBKR** via `ib_insync`
   - Pulls market data + news + Reddit signals
   - Asks the AI for decisions (shortlist/skip; buy selection; position/order reviews)
@@ -57,7 +57,7 @@ flowchart LR
 ```
 
 Key modules:
-- Trader orchestration: `main.py`
+- Trader orchestration: `src/trader/runner.py` (called by `main.py`)
 - Trading execution: `src/trading/executor.py`
 - Position + order review: `src/trading/position_manager.py`
 - Research + screening: `src/research/*`
@@ -125,7 +125,7 @@ Key modules:
 
 ## Architectural debt to address next
 
-The biggest maintainability risk is *orchestration sprawl* in `main.py` (cycle timing + risk + data collection + AI + execution + persistence). Incremental improvements should separate:
+The biggest maintainability risk is *orchestration sprawl* in the trading loop (`src/trader/runner.py`) (cycle timing + risk + data collection + AI + execution + persistence). Incremental improvements should separate:
 - Cycle orchestration
 - Data gathering + enrichment
 - Decisioning (AI)

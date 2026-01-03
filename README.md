@@ -259,6 +259,7 @@ python scripts/run_pytest_with_timeout.py --timeout-seconds 180 -- -q
 
 - `docs/ARCHITECTURE.md`: system design and failure modes
 - `docs/RUNBOOK.md`: operational runbook (start/stop + debugging)
+- `docs/DEVELOPMENT.md`: development guide with an AI-first explanation of how the system works
 
 ## Licence
 
