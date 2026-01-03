@@ -1,0 +1,46 @@
+# ---- Secrets / environment ----
+*.env
+!.env.example
+config/secrets.env
+
+# ---- Logs ----
+*.log
+
+# ---- Local databases / state ----
+*.db
+*.sqlite
+*.sqlite3
+.api_server.lock
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+.tox/
+.nox/
+.venv/
+venv/
+env/
+
+# ---- OS / editor ----
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# ---- Frontend ----
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+

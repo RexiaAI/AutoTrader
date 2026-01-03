@@ -1,0 +1,108 @@
+broker:
+  host: "127.0.0.1"
+  port: 7497  # Default for Paper Trading in TWS
+  client_id: 10
+
+trading:
+  markets:
+    - "US"
+    - "UK"
+  risk_per_trade: 0.05  # 5% of equity per trade
+  max_positions: 10
+  max_new_positions_per_cycle: 2
+  max_cash_utilisation: 0.3  # Max proportion of available cash to allocate at any time
+  cash_budget_tag: "TotalCashValue"  # Use cash (not margin). Alternatives: "AvailableFunds"
+  volatility_threshold: 0.05  # Minimum ATR/Price ratio for "high volatility"
+  max_share_price: 20.0  # Definition of "low cost" shares
+  min_share_price: 2.0  # Avoid very cheap stocks that are often illiquid
+  min_avg_volume: 500000  # Minimum average daily volume (avoid illiquid/microcap stocks)
+  exclude_microcap: true  # Exclude SCM (Small Cap Market) stocks to avoid Rule 144 issues
+
+  # Symbol universe selection (what the AI analyses each cycle).
+  screener:
+    max_candidates: 250
+    scan_codes:
+      - "MOST_ACTIVE"
+      - "TOP_PERC_GAIN"
+      - "HOT_BY_VOLUME"
+      - "HIGH_VS_13W_HI"
+    # When enabled, tickers mentioned in cached Reddit posts are added to the universe (if they can be
+    # qualified via IBKR). This uses only local cache; it does not increase Reddit fetch frequency.
+    include_reddit_symbols: false
+    # Optional manual additions/removals. Each entry is either:
+    # - "SYMBOL" (uses a default market when possible), or
+    # - "SYMBOL,US" / "SYMBOL,UK" to be explicit.
+    include_symbols: []
+    exclude_symbols: []
+
+ai:
+  model: "gpt-4.1-mini"
+  # Trade decisions are AI-driven:
+  # - Stage 1: shortlist (SHORTLIST/SKIP)
+  # - Stage 2: buy selection from the shortlist (BUY happens at end of cycle)
+
+intraday:
+  enabled: true
+  bar_size: "5 mins"
+  duration: "2 D"
+  use_rth: true
+  cycle_interval_seconds: 300
+  # When ALL configured markets are closed, slow down to reduce needless scanning/AI calls.
+  cycle_interval_seconds_closed: 1800
+  stop_atr_multiplier: 2.0
+  take_profit_r: 1.0
+  flatten_minutes_before_close: 10
+
+reddit:
+  enabled: true
+  # Keep this small and respectful: we fetch once per hour and cache locally.
+  fetch_interval_seconds: 3600
+  analysis_interval_seconds: 3600
+  user_agent: "AutoTrader/1.0 (paper trading research)"
+  subreddits:
+    - "stocks"
+    - "wallstreetbets"
+    - "pennystocks"
+    - "UKInvesting"
+  listing: "new"   # new|hot|top
+  limit_per_subreddit: 50
+  max_posts_per_symbol: 8
+  override_enabled: true
+  override_sentiment_threshold: 0.65
+  override_min_mentions: 5
+  override_min_confidence: 0.6
+  score_weight: 0.35  # How much Reddit sentiment contributes to ranking vs IBKR news sentiment
+
+research:
+  technical_indicators:
+    - name: "RSI"
+      params: { window: 14 }
+    - name: "ATR"
+      params: { window: 14 }
+    - name: "BollingerBands"
+      params: { window: 20, window_dev: 2 }
+
+# AI-driven position management (reviewing and adjusting open positions)
+position_management:
+  # How often to review positions (in seconds). Faster = more responsive but more API calls.
+  review_interval_seconds: 60
+  # NOTE: The bot is AI-driven. We do not hard-block actions based on these values.
+  # Keep them here only as optional knobs if you ever want them later.
+  min_hold_minutes: 0
+  min_sell_confidence: 0.0
+  min_adjust_confidence: 0.0
+  max_adjustments_per_position: 999
+  max_stop_widen_pct: 999.0
+  # Enable opportunity rotation (sell underperformers to buy better candidates)
+  opportunity_rotation_enabled: true
+  # Minimum score difference to justify rotation (new candidate must be this much better)
+  min_score_advantage_for_rotation: 0.2
+  # Trailing stop rules
+  trailing_stop:
+    # At what P&L % to move stop to breakeven
+    breakeven_trigger_pct: 2.0
+    # At what P&L % to start trailing
+    trail_start_pct: 3.0
+    # Trail distance (% of gains to lock in)
+    trail_lock_pct: 50.0
+

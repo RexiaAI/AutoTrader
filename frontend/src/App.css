@@ -1,0 +1,177 @@
+.app {
+  width: 100vw;
+  padding: 12px 16px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 8px;
+}
+
+.topbar__left {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.topbar__title {
+  font-size: 18px;
+  font-weight: 760;
+  letter-spacing: 0.2px;
+}
+
+.topbar__subtitle {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.topbar__right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.grid {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  align-items: stretch;
+  overflow: hidden;
+}
+
+@media (max-width: 1300px) {
+  .grid {
+    grid-template-columns: 1fr;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
+  .app {
+    overflow-y: auto;
+    height: auto;
+    min-height: 100vh;
+  }
+  .stack {
+    height: auto;
+    flex: none;
+  }
+  .panelFill {
+    flex: none;
+    height: 600px;
+  }
+}
+
+@media (max-width: 1100px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 0;
+  height: 100%;
+}
+
+.banner {
+  border: 1px solid rgba(255, 77, 79, 0.25);
+  background: rgba(255, 77, 79, 0.08);
+  padding: 10px 12px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  color: var(--text);
+}
+
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+@media (max-width: 1100px) {
+  .split {
+    grid-template-columns: 1fr;
+  }
+}
+
+.panelFill {
+  flex: 1 1 0%; /* Allow grow and shrink */
+  flex-shrink: 1 !important; /* Allow these specific panels to yield space */
+  min-height: 240px; /* Ensure they remain somewhat readable even at small sizes */
+}
+
+.panelBodyFill {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.tabShell {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%;
+}
+
+.tabsBar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.tabsBar__spacer {
+  flex: 1;
+}
+
+.tabBtn {
+  height: 28px;
+  padding: 0 8px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.tabBtn:hover {
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.tabBtn--active {
+  border-color: rgba(124, 102, 255, 0.6);
+  background: rgba(124, 102, 255, 0.16);
+}
+
+.tabContent {
+  flex: 1;
+  min-height: 0;
+}
+
+.tabPane {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.tabGrow {
+  flex: 1;
+  min-height: 0;
+}
+
