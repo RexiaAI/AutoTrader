@@ -260,4 +260,8 @@ python scripts/run_pytest_with_timeout.py --timeout-seconds 180 -- -q
 - `docs/ARCHITECTURE.md`: system design and failure modes
 - `docs/RUNBOOK.md`: operational runbook (start/stop + debugging)
 
+## Licence
+
+This project is licensed under the **Apache License 2.0**. See `LICENSE`.
+
 
